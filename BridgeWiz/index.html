@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BRIDGE Wizard</title>
+  <link rel="stylesheet" href="jquery-ui-1.12.1.custom/jquery-ui.css">
+
+  <link rel = "stylesheet" href = "css/bootstrap.min.css">
+  <link rel = "stylesheet" href = 'css/bootstrap-theme.min.css'>
+
+<!--  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
+    <script src="jquery-3.2.1.min.js"></script>
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<!--    <script src="jquery-ui-1.12.4.custom/jquery-ui.js"></script>-->
+    <script src = "script.js"></script>
+    <script src = "jsPDF/jspdf.js"></script>
+    <script src = "jsPDF/from_html.js"></script>
+    <script src = "jsPDF/split_text_to_size.js"></script>
+    <script src = "jsPDF/standard_fonts_metrics.js"></script>
+    <script src = "jsPDF/jspdf.debug.js"></script>
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>-->
+
+<script>
+    window.onbeforeunload = function () {return false;}
+  $( function() {
+    $( "#tabs" ).tabs();
+      $( "#tabs" ).tabs({
+  disabled: [ 1,2,3,4,5,6,7,8,9,10,11,12]
+});
+  $($("#tabs").find("li")[4]).hide();
+
+  } );
+
+  </script>
+
+<style>
+        #hey1, #hey2{
+            padding-left: 15%;
+        }
+        #risksDiv, #benefitsDiv{
+            padding-left: 10%;
+        }
+
+    #Notes * {
+            font-size:18px;
+        }
+
+    .container{
+            width: 800px;
+            display:inline-block;
+        }
+
+    table {
+	   border-collapse:collapse;
+	   border-spacing: 3px;
+                }
+    fieldset {
+/*    margin: 8px;*/
+        border: 2px solid silver;
+        padding: 8px;
+        border-radius: 4px;
+}
+
+	textarea {
+        resize:none;
+        }
+    .dialogueTextarea{
+     width: 100%;
+        height:100%;
+     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+     -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+     box-sizing: border-box;         /* Opera/IE 8+ */
+
+    }
+    th{
+        border-style:solid;
+        border-width: 1px;
+        border-spacing: 8px;
+        border-collapse: separate;
+        border-right:0 ;
+        border-left:0;
+        border-top:0;
+        border-bottom: 1;
+        background-color:white;
+        }
+        #tabs-1, #tabs-2, #tabs-3, #tabs-4, #tabs-5, #tabs-6, #tabs-7, #tabs-8, #tabs-9,#tabs-10, #tabs-12, #tabs-13{
+            font-size: 19px;
+        }
+        #tabs-11{
+            font-size:20px;
+            padding-left: 120px;
+        }
+        button:disabled{
+            opacity: 0.3;
+        }
+    select optgroup{
+        font-weight: bold;
+    }
+        #tabs .ui-tabs-panel {
+            height: 550px;
+            overflow: auto;
+            border-width: 8px;
+}
+        #coloredTable td{
+            height: 65px;
+        }
+        tab{
+            padding-left: 4em;
+        }
+        #notesButtons{
+            font-size: 16px;
+            text-align: center;
+
+        }
+        .ui-tabs .ui-state-disabled {
+            display: none; /* disabled tabs don't show up */
+        }
+        #keyActionStatementProfileDiv{
+            white-space: pre;
+        }
+        li, ul{
+            margin-left: 2em;
+        }
+        option.disabled{
+            background-color: grey; 
+            color: white;
+        }
+        #nextButton{
+            margin-left:10px;
+            margin-bottom:10px;
+        }
+    .centered {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+}
+    .disabledButton{
+        pointer-events: none;
+/*        opacity: 0;*/
+    }
+    .greyed{
+        background-color: grey;
+    }
+    .centerHeader{
+        margin-left: 280px;
+    }
+    tr.spaceUnder>td {
+        padding-bottom: 1em;
+    }
+    .no-close .ui-dialog-titlebar-close {
+        display: none;
+    }
+    </style>
+    <!-- Theme included stylesheets -->
+<link href="https://cdn.quilljs.com/1.3.0/quill.snow.css" rel="stylesheet">
+<link href="//cdn.quilljs.com/1.3.0/quill.bubble.css" rel="stylesheet">
+</head>
+<body>
+
+<div style="min-width: 1300px; margin: 0 auto;">
+<div id="tabs">
+  <ul>
+    <li><a href="#tabs-1">Welcome</a></li>
+    <li><a href="#tabs-2">What</a></li>
+      <li><a href = "#tabs-3">Executability</a></li>
+      <li><a href = "#tabs-4">When</a></li>
+      <li><a href = "#tabs-5">Decidability</a></li>
+      <li><a href = "#tabs-6">Benefits</a></li>
+      <li><a href = "#tabs-7">Risks, Harms, Costs</a></li>
+      <li><a href = "#tabs-8">Balance</a></li>
+      <li><a href = "#tabs-9">ClassifyEvidenceQuality</a></li>
+      <li><a href = "#tabs-10">Deontic</a></li>
+      <li><a href = "#tabs-11">Who</a></li>
+      <li><a href = "#tabs-12">Extras</a></li>
+      <li><a href = "#tabs-13">Report Format</a></li>
+      <li><a href = "#tabs-14">Notes</a></li>
+  </ul>
+<!--    <div id = "ignorePDF">-->
+    <div id="tabs-1">
+        <center> <h3>Welcome to BridgeWiz APA</h3>
+
+            <br/>
+        <img id = "wizPic" src = "pictures/wiz_white.gif">
+            <br/>
+            <br/>
+            Select An Activity:
+            <br/>
+            <br/>
+        <button type = button onclick = "nextTab(); disableBack()">Create Key Action Statement </button></center>
+  </div>
+      <div id="tabs-2">
+        <span style="margin-right: 15px"> What type of activity do you propose?</span>
+        <select id = "mySelectActivity" oninput = "reveal(); createVerbList()" onchange = "selectChange()">
+            <option value = "null"></option>
+            <optgroup label = "Gather Data">
+                <option value="INQUIRE">INQUIRE</option>
+                <option value="EXAMINE">EXAMINE</option>
+                <option value ="TEST"> TEST</option>
+                <option value="MONITOR">MONITOR</option>
+            </optgroup>
+            <optgroup label ="DRAW CONCLUSION">
+                <option value="CONCLUDE">CONCLUDE</option>
+            </optgroup>
+            <optgroup label ="ACTIVITY">
+                <option value="ADVOCATE">ADVOCATE</option>
+                <option value="DISPOSE">DISPOSE</option>
+                <option value="DOCUMENT">DOCUMENT</option>
+                <option value="EDUCATE/COUNSEL">EDUCATE/COUNSEL</option>
+                <option value="PERFORM">PERFORM</option>
+                <option value="PREPARE">PREPARE</option>
+                <option value="PRESCRIBE">PRESCRIBE</option>
+                <option value="PREVENT">PREVENT</option>
+                <option value="REFER/CONSULT">REFER/CONSULT</option>
+            </optgroup>
+          </select>
+          <input style="margin-left: 35px " type="checkbox" name="myCheckbox" id="notCheckbox" onclick = "notIt()"><label style="margin-left: 5px " for="notCheckbox">NOT</label>
+      <br/>
+      <br/>
+      <br/>
+<div id = "mySelectVerb" style = "visibility:hidden">
+    <span id = "mySpan"></span>
+    <select id = "selectVerb" oninput = "textareaReveal()"onchange = "textAreaText(); tableVerbInput()"></select>
+    <button id = "verbButton" type="button">ADD</button>
+                <div id="verbDialog"><textarea class = "dialogueTextarea" id = "verbWindow"></textarea></div>
+
+</div>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+     <div id = "myTextarea" style = "visibility:hidden">
+        <span id = "textAreaSpan" style = "position: relative; bottom: 60px"></span>
+         <textarea id = "textarea" rows = 3 cols = 60 oninput = "tableWhatInput(); textareaTransferForwardColored(this)"></textarea>
+         <br/>
+         <br/>
+          </div>
+<!--      <div class = "container">  -->
+      <div id = "coloredTableDiv" style = "visibility:hidden;">
+         <table style = "table-layout: fixed" id = "coloredTable" border = "0" width = "100%">
+         <colgroup>
+            <col style="background-color: mintcream; width:10%;">
+            <col style="background-color:lightskyblue; width:20%">
+             <col style ="background-color:linen; width:40%">
+             <col style = "width:30%">
+            </colgroup>
+                <tr>
+                 <th id = "firstColorHeader"></th>
+                 <th id = "secondColorHeader"><center>VERB</center></th>
+                 <th id = "thirdColorHeader"><center>WHAT</center></th>
+             </tr>
+             <tr>
+                <td style = "height:65px"></td>
+                <td style = "height:65px; word-wrap: break-word"></td>
+                <td id = "td0" style = "height:65px; word-wrap: break-word"></td>
+                 <td>
+                    <button type = "button" onclick = "andButtonFunction(this)">AND</button>
+                    <button type = "button" onclick = "orButtonFunction(this)">OR</button>
+                    <button type = "button" onclick = "delButtonFunction(this)">DEL</button>
+                 </td>
+             </tr>
+         </table>
+<!--          </div>-->
+      </div>
+          <br/>
+    </div>
+  <div id = "tabs-3">
+      <p>Is each recommended action (what to do) stated specifically and unambiguously? That is, would members of the intended audience execute each action in a consistent way? If not, rewrite the action.</p>
+      <br/>
+      <b>Recommended Action</b>
+      <table border = "1" id = "executableTable" width = "80%">
+          <colgroup>
+          <col style = "width: 30%; background-color: Gainsboro">
+          <col style = "width: 70%">
+          </colgroup>
+         <tr>
+          <td style = "vertical-align: top"></td>
+          <td><textarea style = "width:100%; border:0" id = "myArea0" oninput = "textareaTransferBackwardColored(this)"></textarea></td>
+         </tr>
+      </table>
+  </div>
+    <div id = "tabs-4">
+        Under what conditions will <b><span id = "whenSpan"></span></b> be performed?
+        <br/>
+        <br/>
+        <center><table id = "whenTable" border = "0" width = "85%"></center>
+         <colgroup>
+            <col style= "width:20%">
+             <col style ="background-color:LightYellow; width:50%">
+             <col style = "width:30%">
+            </colgroup>
+             <tr>
+                 <th></th>
+                 <th><center>Under What Conditions</center></th>
+                 <th></th>
+             </tr>
+             <tr>
+                <td></td>
+                <td><textarea style= "width: 100%; height: 100%; border: none; background-color:LightYellow" id = "whenArea0" oninput = "textareaTransferForward(this)"></textarea></td>
+                 <td>
+            <button type = "button" id = "row0" onclick = "andButtonFunctionTwo(this)">AND</button>
+             <button type = "button" id = "row0" onclick = "orButtonFunctionTwo(this)">OR</button>
+             <button type = "button" id = "row0" onclick = "delButtonFunctionTwo(this)">DEL</button></td>
+             </tr>
+        </table>
+    </div>
+    <div id = "tabs-5">
+        Would the guideline's intended audience consistently determine whether each condition has been satisfied? If not, rewrite the condition.
+        <br/>
+        <br/>
+        <b>Condition</b>
+        <table id = "decidabilityTextareas" border = "0" width = "100%;">
+            <tr>
+                <td><textarea style = "width: 70%" rows = "3" id = "decidabilityTextarea0" oninput = "textareaTransferBackward(this)"></textarea></td>
+            </tr>
+        </table>
+
+    </div>
+    <div id = "tabs-6">
+        <div id = "benefitsDiv">
+        What are the intended benefits of
+        <br/>
+        <span id = "benefitsSpan"></span>
+        <br/>
+        <br/>
+        IF
+        <br/>
+        <br/>
+        <span id = "benefitsSpanTwo"></span>
+        <br/>
+        <textarea id = "benefitsTextarea" rows = "12" cols = "40" oninput = "balanceBenefitsInput(this)"></textarea>
+    </div>
+    </div>
+    <div id = "tabs-7">
+        <div id = "risksDiv">
+        What are the anticipated Risks, Harms, and Costs of
+        <br/>
+        <span id = "risksSpan"></span>
+        <br/>
+        <br/>
+        IF
+        <br/>
+        <br/>
+<span id = "risksSpanTwo"></span>
+        <br/>
+        <textarea id = "risksTextarea" rows = "12" cols = "40" oninput = "balanceRisksInput(this)"></textarea>
+        </div>
+        </div>
+    <div id = "tabs-8">
+        Is there Equilibrium or a preponderance of Benefits or Risks, Harms, and Costs?
+        <br/>
+        <br/>
+        <div class = "container-fluid">
+        <div class = "row">
+            <div class = "col-lg-4 col-med-4 col-sm-4 col-xs-4">
+                <div id = "hey1">
+            <img id = "balanceImage" src = "pictures/equilibrium.png">
+            <br/>
+            </div>
+            </div>
+            <div class = "col-lg-6 col-med-6 col-sm-6 col-xs-6">
+                <br/>
+            <input type = "radio" name = "picture" id = "equilibrium" checked = "true" onclick = "imageSwap(); deonticSuggestion()"> Equilibrium <br/>
+            <input type = "radio" name = "picture" id = "preponderanceOfRisks" onclick = "imageSwap(); deonticSuggestion()"> Preponderance of Risks, Harms, and Costs <br/>
+            <input type = "radio" name = "picture" id = "preponderanceOfBenefits" onclick = "imageSwap(); deonticSuggestion()"> Preponderance of Benefits <br/>
+                <br/>
+             <br/>
+            </div>
+        </div>
+            <div class = "row">
+                <div class = "col-lg-4 col-med-4 col-sm-4 col-xs-4">
+                    <br/>
+                    <div id = "hey2">
+                         <b>Benefits</b><br/>
+                        <textarea id = "benefitsEquilibriumTextarea" rows = 8 cols = 25 readonly></textarea>
+                </div>
+                </div>
+                <div class = "col-lg-6 col-med-6 col-sm-6 col-xs-6">
+                    <br/>
+                    <b>Risks, Harms, Costs</b><br/>
+                <textarea id = "risksEquilibriumTextarea" rows = 8 cols = 25 readonly></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id = "tabs-9">
+    What aggregate evidence quality supports these benefits, risks, harms, and costs? <br/>
+        <span id = "ceqSpan"></span>
+        <br/>
+        <br/>
+        IF
+        <br/>
+        <span id =  "ceqSpanTwo"></span>
+        <br/>
+        <br/>
+
+        <fieldset>
+            <legend id = "fieldsetLegend" style = "width:auto; border-bottom: 0">Evidence Quality</legend>
+        <div id = "ceqRadioButtons">
+            <input type = "radio" name = "ceq" id = "ceqRadioA" onclick = "deonticSuggestion()"> <b>A</b> Intervention - well designed and conducted meta-analyses on applicable populations; Diagnosis - Indept gold standard studies of applicable pops. <br/><br/>
+            <input type = "radio" name = "ceq" id = "ceqRadioB" onclick = "deonticSuggestion()"> <b>B</b> Trials or diagnostic studies with minor limitations; consistent findings from multiple observational studies<br/><br/>
+            <input type = "radio" name = "ceq" id = "ceqRadioC" onclick = "deonticSuggestion()"> <b>C</b> Single or few observational studies or multiple studies with inconsistent findings or major limitations<br/><br/>
+            <input type = "radio" name = "ceq" id = "ceqRadioD" onclick = "deonticSuggestion()"> <b>D</b> Expert opinion, case reports, reasoning from first principles<br/><br/>
+            <input type = "radio" name = "ceq" id = "ceqRadioX" onclick = "deonticSuggestion()"> <b>X</b> Exceptional situations where validating studies cannot be performed and there is a clear preponderance of harm or benefit<br/><br/>
+        </div>
+        </fieldset>
+    </div>
+    <div id = "tabs-10">
+    <center><img src = "pictures/grading.png"></center><br/>
+    <br/>
+        With a <span id = "deonticSpan" style = "color: red"></span> Evidence Quality Rating and <span id = "deonticSpanThree"></span> this key action statement should have a Recommendation Strength of
+        <div id = "deonticDiv"id style = "color: red"></div>
+
+        <br/>
+        The level of obligation should be <span id = "deonticSpanTwo" style = "color: red"></span>
+    </div>
+    <div id = "tabs-11">
+        <br/>
+        WHO <span id = "whoDeonticSpan"></span> <span id = "whoSpan"></span>?
+        <br/>
+        <br/>
+        <br/>
+        <textarea id = "whoTextarea" rows = "5" cols = "70"></textarea>
+    </div>
+    <div id = "tabs-12">
+            <div id = "disabledDiv">
+                <div><textarea id = "profile0" rows = "4" cols = "100"></textarea><span style= "position: relative; bottom: 58px; margin: 12px "><button class = "profileEditClass" id = "profile0edit" onclick = "profileEditor(this)">Edit</button><span style = "position:relative; top: 33px; right: 50px;"><input type = "radio" name = "profile"id = "profile0select" ><label for = "profile0select">Select</label></span></span></div>
+                <div><textarea id = "profile1" rows = "4" cols = "100"></textarea>
+                    <span style= "position: relative; bottom: 58px; margin: 12px "><button class = "profileEditClass" id = "profile1edit" onclick = "profileEditor(this)">Edit</button><span style = "position:relative; top: 33px; right: 50px;"><input type = "radio" name = "profile" id = "profile1select"><label>Select</label></span></span></div>
+                <div><textarea id = "profile2" rows = "4" cols = "100"></textarea>
+                    <span style= "position: relative; bottom: 58px; margin: 12px "><button class = "profileEditClass" id = "profile2edit" onclick = "profileEditor(this)">Edit</button><span style = "position:relative; top: 33px; right: 50px;"><input type = "radio" name = "profile" id = "profile2select"><label>Select</label></span></span></div>
+                <div><textarea id = "profile3" rows = "4" cols = "100"></textarea>
+                    <span style= "position: relative; bottom: 58px; margin: 12px "><button class = "profileEditClass" id = "profile3edit" onclick = "profileEditor(this)">Edit</button><span style = "position:relative; top: 33px; right: 50px;"><input type = "radio" name = "profile" id = "profile3select"><label>Select</label></span></span></div>
+                    <div id="dialog"><textarea class = "dialogueTextarea" id = "editWindow"></textarea></div>
+
+    </div></div>
+    <div id = "tabs-13">
+        <table style = "width: 100%">
+            <tr class="spaceUnder">
+                <td>Value Judgments:</td> <td style = "width: 90%"><textarea id = "judgementsTextarea" cols = "75" rows = "2" ></textarea></td>
+            </tr>
+            <tr class="spaceUnder">
+                <td>Intentional Vagueness:</td><td style = "width: 90%"> <textarea id = "intentionalVaguenessTextarea" cols = "75" rows = "2"></textarea></td>
+            </tr>
+            <tr class="spaceUnder">
+                <td>Role Of Patient Preferences:</td><td style = "width: 90%"> <textarea id = "preferencesTextarea" cols = "75" rows = "2"></textarea></td>
+            </tr>
+            <tr class="spaceUnder">
+                <td>Exclusions:</td><td style = "width: 90%"> <textarea id = "exclusionsTextarea" cols = "75" rows = "2"></textarea></td>
+            </tr>
+            <tr class="spaceUnder">
+                <td>Policy Level:</td><td style = "width: 90%"> <textarea id = "policyLevelTextarea" cols = "75" rows = "2"></textarea></td>
+            </tr>
+            <tr class="spaceUnder">
+                <td>Differences of Opinion:</td><td style = "width: 90%"> <textarea id = "dooTextarea" cols = "75" rows = "2"></textarea></td>
+            </tr>
+        </table>
+    </div>
+
+
+    <div id = "tabs-14">
+         <textarea id = "notesTextarea" rows = "25" cols = "100">
+        </textarea>
+    </div>
+<!--    </div>-->
+    <br/>
+    <br/>
+    <center>
+            <div id = "notesButtons"  style = "visibility:hidden">
+         <button id = "backButton" type = "button" onclick = "backTab()">Back </button>
+         <button  id = "nextButton" type = "button" onclick = "nextTab()">Next</button>
+        <br/>
+        <button id = "resetButton" type = "button" onclick = "resetForm()">Restart</button>
+        </div></center>
+<!--
+     </div>
+
+    </div>
+</div>
+
+-->
+    </div>
+    </div>
+<div id = "keyActionStatementProfileDiv" style = "visibility:visible">
+<h3 class = "centerHeader">Key Action Statement Profile</h3>
+<br/>
+<br/>
+<b>Date:</b>
+<span id = "dateSpan"></span>
+    <h2></h2>
+<div><b>Key Action statement:</b>
+    <span id = "keyActionStatementSpan"></span></div>
+    <div><b>Value Judgments:</b><span id = "judgementsSpan"></span></div><br>
+    
+    <div><span style="font-weight:bold">Intentional Vagueness:</span><span id = "vaguenessSpan"></span></div><br>
+    
+    <div><b>Role Of Patient Preferences:</b><span id = "preferencesSpan"></span></div><br>
+
+    <div><b>Exclusions:</b> <span id = "exclusionsSpan"></span></div><br>
+
+    <div><b>Policy Level:</b><span id = "policyLevelSpan"></span></div><br>
+
+    <div><b>Differences of Opinion:</b><span id = "dooSpan"></span></div><br>
+
+    <div><b>Notes:</b><span id = "notesSpan"></span></div>
+</div>
+
+
+
+
+<script> src="js/jquery-3.1.1.min.js"</script>
+<script> src ="js/bootstrap.min.js"</script>
+<script>
+$( "#dialog" ).dialog({ autoOpen: false });
+$( ".profileEditClass" ).click(function() {
+  $( "#dialog" ).dialog( "open" );
+    $("#dialog").dialog({
+        height: 500,
+        width: 400,
+        title: "Edit the Profile",
+        buttons:[
+            {
+                text:"Save",
+                click: function(){
+                    exitClick();
+                    $(this).dialog("close");
+                }
+            },
+            {
+                text: "Cancel",
+                click: function(){
+                    $(this).dialog("close");
+                    $("#disabledDiv").removeClass("disabledButton");
+            }
+            
+            
+            }
+        ],
+        dialogClass: "no-close"
+    });
+});
+    $("#verbDialog").dialog({autoOpen: false});
+    $("#verbButton").click(function(){
+       $("#verbDialog").dialog("open");
+        $("#verbDialog").dialog({
+        height: 200,
+        width: 400,
+        title: "Add a Verb",
+        buttons:[
+            {
+                text:"Save",
+                click: function(){
+                    verbInput();
+                    $(this).dialog("close");
+                }
+            },
+            {
+                text: "Cancel",
+                click: function(){
+                    $(this).dialog("close");
+            }
+            
+            
+            }
+        ],
+        dialogClass: "no-close"  
+            
+        });
+        
+    });
+</script>
+</body>
+</html>
