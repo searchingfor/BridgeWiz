@@ -31,7 +31,7 @@
       $( "#tabs" ).tabs({
   disabled: [ 1,2,3,4,5,6,7,8,9,10,11,12]
 });
-  $($("#tabs").find("li")[4]).hide();
+//  $($("#tabs").find("li")[4]).hide();
 
   } );
 
@@ -437,8 +437,9 @@
                 <div><textarea id = "profile3" rows = "4" cols = "100"></textarea>
                     <span style= "position: relative; bottom: 58px; margin: 12px "><button class = "profileEditClass" id = "profile3edit" onclick = "profileEditor(this)">Edit</button><span style = "position:relative; top: 33px; right: 50px;"><input type = "radio" name = "profile" id = "profile3select"><label>Select</label></span></span></div>
                     <div id="dialog"><textarea class = "dialogueTextarea" id = "editWindow"></textarea></div>
-
-    </div></div>
+    </div>
+        <div id = "selectDialog" style = "font-size: 20px; font-weight: bold"><center>Please select an option</center></div>
+               </div>
     <div id = "tabs-13">
         <table style = "width: 100%">
             <tr class="spaceUnder">
@@ -486,7 +487,7 @@
 -->
     </div>
     </div>
-<div id = "keyActionStatementProfileDiv" style = "visibility:visible">
+<div id = "keyActionStatementProfileDiv" style = "display:none">
 <h3 class = "centerHeader">Key Action Statement Profile</h3>
 <br/>
 <br/>
@@ -508,6 +509,7 @@
     <div><b>Differences of Opinion:</b><span id = "dooSpan"></span></div><br>
 
     <div><b>Notes:</b><span id = "notesSpan"></span></div>
+    <div id = "documentDownloaded" style = "font-size: 20px; font-weight: bold"><center>Document Downloaded!</center></div>
 </div>
 
 
@@ -573,6 +575,20 @@ $( ".profileEditClass" ).click(function() {
         });
         
     });
+        $("#selectDialog").dialog({autoOpen: false});
+        $("#selectDialog").dialog({
+        height: 150,
+        width: 350,
+        close(event, ui){
+            $("#disabledDiv").removeClass("disabledButton");
+            }
+        });
+        
+        $("#documentDownloaded").dialog({autoOpen: false});
+        $("#documentDownloaded").dialog({
+        height: 150,
+        width: 350
+        });
 </script>
 </body>
 </html>

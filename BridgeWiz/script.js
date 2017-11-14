@@ -88,15 +88,15 @@ switch(tabIndex){
     }
       //  ceqSpan.innerHTML = verbText+" "+tableColored.rows[1].cells[2].innerHTML;
 
-        var myVerb = tableColored.rows[1].cells[1].innerHTML;
-        var myWhat = tableColored.rows[1].cells[2].innerHTML;
+        var myVerb = tableColored.rows[varloop+1].cells[1].innerHTML;
+        var myWhat = tableColored.rows[varloop+1].cells[2].innerHTML;
         whoSpan.innerHTML = "";
         if(myVerb.includes("do not")){
-             whoSpan.insertAdjacentHTML("beforeend", myVerb.split("do ").pop() + " ");
+            whoSpan.insertAdjacentHTML("beforeend", myVerb.split("do ").pop() + " ");
             whoSpan.insertAdjacentHTML("beforeend", myWhat + " ");
         }else{
-        whoSpan.insertAdjacentHTML("beforeend", myVerb + " ");
-        whoSpan.insertAdjacentHTML("beforeend", myWhat + " ");
+            whoSpan.insertAdjacentHTML("beforeend", myVerb + " ");
+            whoSpan.insertAdjacentHTML("beforeend", myWhat + " ");
         }
         if(varloop === 0){
             
@@ -155,7 +155,13 @@ switch(tabIndex){
         $( "#tabs" ).tabs({ active: tabIndexOne});
         $( "#tabs" ).tabs('disable', tabIndex);
         var lcDeonticText = deonticSpanTwo.innerHTML.toLowerCase();
-        whoDeonticSpan.innerHTML = lcDeonticText;
+        if(lcDeonticText.innerHTML.includes("not")){
+            alerT(lcDeonticText.split(" not").pop());
+            whoDeonticSpan.innerHTML = lcDeonticText.split("not").pop();
+        }else{
+            alert(lcDeonticText);
+            whoDeonticSpan.innerHTML = lcDeonticText;
+        }
         break;
     case 10:
         if(tableColored.rows[varloop + 1].cells[1].innerHTML.includes("do not")){
@@ -196,11 +202,12 @@ switch(tabIndex){
         $( "#tabs" ).tabs('disable', tabIndex);
                }
         else{
-            alert("Please select an option above");
+            $("#selectDialog").dialog("open"); 
+            $("#disabledDiv").addClass("disabledButton");
+
         }
         break;
     case 12:
-
         $("#judgementsSpan").text(" " + $("#judgementsTextarea").val()); 
         $("#vaguenessSpan").text(" " + $("#intentionalVaguenessTextarea").val());
         $("#preferencesSpan").text(" " + $("#preferencesTextarea").val());
@@ -296,7 +303,7 @@ function selectChange(){
             tableVerbInput();
           }
          }
-//Updates the fields when the "NOT Checkbox" is selected
+//Updates the fields when the "NOT Checkbox" is clicked
 function notIt(){
     var mySelectActivity = document.getElementById("mySelectActivity");
     var mySelectVerb = document.getElementById("mySelectVerb");
@@ -313,15 +320,15 @@ function notIt(){
     var notCheckbox = document.getElementById("notCheckbox");
     var selectVerb = document.getElementById("selectVerb");
     var textAreaSpan = document.getElementById("textAreaSpan");
-  //  alert(selectVerb.value);
     if(notCheckbox.checked === true){
-        table.rows[rowCount-1].cells[1].setAttribute("checked", "true");
+//        table.rows[rowCount-1].cells[1].setAttribute("checked", "true");
         table.rows[rowCount-1].cells[1].innerHTML = "do not " + selectVerb.value;
         tableTwo.rows[rowCount-2].cells[0].innerHTML = "do not " + selectVerb.value;
+        textAreaSpan.innerHTML = capitalizeFirstLetter(table.rows[rowCount-1].cells[1].innerHTML) + " what?";
     }else{
         table.rows[rowCount-1].cells[1].innerHTML = table.rows[rowCount-1].cells[1].innerHTML.substring('do not '.length);
         tableTwo.rows[rowCount-2].cells[0].innerHTML = table.rows[rowCount-1].cells[1].innerHTML;
-        textAreaSpan.innerHTML = selectVerb.value;
+        textAreaSpan.innerHTML = capitalizeFirstLetter(table.rows[rowCount-1].cells[1].innerHTML) + " what?";
     }
 }
  //Creates the list of verbs from the activity
@@ -997,7 +1004,6 @@ function delButtonFunction(obj){
 //        myArray[varloop - 1][0] = verb;
 //        myArray[varloop - 1][1] = verbWhat;
 //        myArray[varloop - 1][2] = risksSpanTwo.innerHTML.trim();
-//        alert(risksSpanTwo.innerHTML);
 //        myArray[varloop - 1][3] = whoTextarea.value;
 //        myArray[varloop - 1][4] = benefitsTextarea.value;
 //        myArray[varloop - 1][5] = risksTextarea.value;
@@ -1019,9 +1025,6 @@ function delButtonFunction(obj){
         }
         var nextVerb = tableColored.rows[varloop + 1].cells[1].innerHTML;
         var nextVerbWhat = tableColored.rows[varloop + 1].cells[2].innerHTML;
-          //  alert(varloop);
-          //  alert(nextVerb);
-          //  alert(nextVerbWhat);
 
 	if(nextVerb.slice(-1) === "e"){
         if(nextVerb.includes("do not")){          
@@ -1103,7 +1106,6 @@ function delButtonFunction(obj){
         for(i = 0; i < numRows-1; i++){
             var benefitsSplit = myArray[i][4].split(/\n/);
             var risksSplit = myArray[i][5].split(/\n/);
-            alert(benefitsSplit);
             for( j = 0; j < benefitsSplit.length; j++){
                 if(benefitsSplit[j] != ""){
                     benefitsBulleted = benefitsBulleted + "<li>" + benefitsSplit[j] + "</li>";
@@ -1127,7 +1129,6 @@ function delButtonFunction(obj){
         var numRows = coloredTable.rows.length;
         var profile = document.getElementById("profile0");
         var andOr = "";
-      // // alert(myArray[0][3]);
         if(numRows > 2){
             andOr = coloredTable.rows[2].cells[0].innerHTML;
         }
@@ -1297,7 +1298,6 @@ function tabsRewrite(){
         var deonticSpanThree = document.getElementById("deonticSpanThree");
         var nextVerb = tableColored.rows[varloop + 1].cells[1].innerHTML;
         var nextVerbWhat = tableColored.rows[varloop + 1].cells[2].innerHTML;
-      //  alert("nextVerbWhat="+nextVerbWhat);
             benefitsSpan.innerHTML = nextVerb+" "+nextVerbWhat;
             risksSpan.innerHTML = nextVerb;
             ceqSpan.innerHTML = nextVerb;
@@ -1344,7 +1344,6 @@ function tableCleanup(){
 //        table.rows[table.rows.length - 1].cells[3].childNodes[1].enabled = true;
 //        table.rows[table.rows.length - 1].cells[3].childNodes[3].enabled = true;
 //    } else if(table.rows.length > 2){
-//        alert("fire2");
 //        table.rows[table.rows.length - 1].cells[3].childNodes[tableCleanupButton].enabled = true;
 //        table.rows[table.rows.length - 1].cells[3].childNodes[2].enabled = true;
 //
@@ -1386,7 +1385,6 @@ function tableCleanupTwo(){
     for(i = 1; i < rowCount; i++ ){
         if(table.rows.length != 2){
             if(table.rows[i].cells[1].childNodes[0].value === ""){
-                alert(table.rows[i].cells[1].childNodes[0]);
                 table.deleteRow(i);
                 tableTwo.deleteRow(i-1);
                 i--;
@@ -1439,7 +1437,7 @@ function createPDF(){
         'width': 180
     });
 
-    doc.output("dataurlnewwindow");
-  
+    doc.save("BridgeWiz.pdf");
+    $("#documentDownloaded").dialog( "open" );
 
 }
